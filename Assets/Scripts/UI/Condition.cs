@@ -19,12 +19,21 @@ public class Condition : MonoBehaviour
 
     private void Update()
     {
-        uiBar.fillAmount = GetPercentage();
+        if(uiBar == null||maxValue<=0) return;
+        if(!float.IsNaN(curValue)&&!float.IsInfinity(curValue))
+            uiBar.fillAmount = GetPercentage();
     }
 
     float GetPercentage()
     {
-        return curValue/maxValue;
+        float percentage = curValue/maxValue;
+        percentage=Mathf.Clamp01(percentage);
+        return percentage;
+    }
+
+    public void Set(float _value)
+    {
+        curValue=Mathf.Clamp(_value,0f,maxValue);
     }
 
     public void Add(float _value)

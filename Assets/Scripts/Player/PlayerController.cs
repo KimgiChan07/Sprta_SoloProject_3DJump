@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+   private PlayerCondition playerCondition;
+   private PlayerJumpUiCondition jumpCondition;
    [Header("Movement")]
-   public float moveSpeed;
-   public float jumpForce;
    public LayerMask groundLayer;
+   public float moveSpeed;
    private Vector2 curMovementInput;
 
    [Header("Look")]
@@ -19,10 +20,16 @@ public class PlayerController : MonoBehaviour
    private float camCurXRot;
    private Rigidbody rigid;
 
-
    private void Awake()
    {
+      playerCondition = GetComponent<PlayerCondition>();
+      jumpCondition = GetComponent<PlayerJumpUiCondition>();
       rigid = GetComponent<Rigidbody>();
+   }
+
+   private void Start()
+   {
+      Cursor.lockState = CursorLockMode.Locked;
    }
 
    private void FixedUpdate()
@@ -35,7 +42,7 @@ public class PlayerController : MonoBehaviour
       CameraLook();
    }
    
-   //-----------------------------------------------------------------------------
+   //--------------------------Move---------------------------------
 
    public void OnMove(InputAction.CallbackContext context)
    {
@@ -58,7 +65,7 @@ public class PlayerController : MonoBehaviour
       rigid.velocity = dir;
    }
    
-   //-----------------------------------------------------------------------------
+   //---------------------------Look------------------------------------
 
    public void OnLook(InputAction.CallbackContext context)
    {
@@ -74,14 +81,29 @@ public class PlayerController : MonoBehaviour
       transform.localEulerAngles+=new Vector3(0, mouseDelta.x*lookSensitivity, 0);
    }
 
-   //-----------------------------------------------------------------------------
+   
+   //---------------------------JUMP---------------------------------------
    
    public void OnJump(InputAction.CallbackContext context)
    {
+      if(playerCondition==null) return;
+      
       if (context.phase == InputActionPhase.Started && IsGrounded())
       {
-         Debug.Log("Jump");
-         rigid.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+         if (playerCondition.IsJumpCharge())
+         {
+            jumpCondition?.Show();
+         }
+      }
+      else if (context.phase == InputActionPhase.Canceled)
+      {
+         if (playerCondition.isCharging)
+         {
+            float jumpForce = playerCondition.EndJumpCharge();
+            rigid.AddForce(Vector3.up * jumpForce ,ForceMode.Impulse);
+            playerCondition.stamina.Set(0f);
+            //rigid.velocity= new Vector3(rigid.velocity.x,jumpForce,rigid.velocity.z);
+         }
       }
    }
 
@@ -94,15 +116,12 @@ public class PlayerController : MonoBehaviour
          new Ray(transform.position + (transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down),
          new Ray(transform.position + (-transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down),
       };
-
-      
       
       for (int i = 0; i < rays.Length; i++)
       {
          Debug.DrawRay(rays[i].origin, rays[i].direction * 0.1f, Color.red, 1f);
          if (Physics.Raycast(rays[i],1f,groundLayer))
          {
-            Debug.Log("Grounded");
             return true;
          }
       }
