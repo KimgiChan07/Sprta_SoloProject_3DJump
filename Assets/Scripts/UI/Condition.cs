@@ -9,21 +9,12 @@ public class Condition : MonoBehaviour
     public float curValue;
     public float startValue;
     public float maxValue;
-    public float passiveValue;
     public Image uiBar;
 
     private void Start()
     {
-        curValue = startValue;
+        Set(startValue);
     }
-
-    private void Update()
-    {
-        if(uiBar == null||maxValue<=0) return;
-        if(!float.IsNaN(curValue)&&!float.IsInfinity(curValue))
-            uiBar.fillAmount = GetPercentage();
-    }
-
     float GetPercentage()
     {
         float percentage = curValue/maxValue;
@@ -34,15 +25,25 @@ public class Condition : MonoBehaviour
     public void Set(float _value)
     {
         curValue=Mathf.Clamp(_value,0f,maxValue);
+        Debug.Log($"[Condition] Set: {curValue}/{maxValue}  ¡æ fill: {GetPercentage()}");
+        UpdateUI();
     }
 
     public void Add(float _value)
     {
-        curValue =Mathf.Min(curValue + _value, maxValue);
+        Set(curValue + _value);
     }
 
     public void Subtract(float _value)
     {
-        curValue =Mathf.Max(curValue - _value, 0);
+        Set(curValue - _value);
+    }
+
+    void UpdateUI()
+    {
+        if (uiBar != null)
+        {
+            uiBar.fillAmount = GetPercentage();
+        }
     }
 }

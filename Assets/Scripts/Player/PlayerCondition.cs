@@ -27,6 +27,8 @@ public class PlayerCondition : MonoBehaviour
             }
         }
     }
+    
+    //-----------------------Jump------------------------
     public bool IsJumpCharge()
     {
         isCharging = true;
@@ -44,5 +46,10 @@ public class PlayerCondition : MonoBehaviour
         jumpCharge = 0f;
         
         return force;
+    }
+    //-----------------------Stat------------------------
+    public void HealthHeal(float _amount)
+    {
+        health.Add(_amount);
     }
 }
