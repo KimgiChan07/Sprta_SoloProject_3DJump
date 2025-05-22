@@ -25,7 +25,6 @@ public class Condition : MonoBehaviour
     public void Set(float _value)
     {
         curValue=Mathf.Clamp(_value,0f,maxValue);
-        Debug.Log($"[Condition] Set: {curValue}/{maxValue}  ¡æ fill: {GetPercentage()}");
         UpdateUI();
     }
 

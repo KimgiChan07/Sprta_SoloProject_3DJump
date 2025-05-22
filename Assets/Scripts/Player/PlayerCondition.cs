@@ -47,6 +47,7 @@ public class PlayerCondition : MonoBehaviour
         
         return force;
     }
+    
     //-----------------------Stat------------------------
     public void HealthHeal(float _amount)
     {
