@@ -164,7 +164,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (slots[_index] == null || _index < 0 || _index >= slots.Length) return;
 
-        var item = slots[_index];
+        ItemSlot item = slots[_index];
 
         if (item == null)
         {
@@ -191,7 +191,7 @@ public class InventoryUI : MonoBehaviour
             switch (itemEffect.type)
             {
                 case ConsumableType.Health_Heal:
-                    playerCondition.HealthHeal(20);
+                    playerCondition.HealthHeal(itemEffect.value);
                     break;
             }
         }
@@ -199,7 +199,7 @@ public class InventoryUI : MonoBehaviour
         slots[_index].quantity--;
         if (slots[_index].quantity <= 0)
         {
-            slots[_index].item = null;
+            slots[_index].Clear();
         }
 
         UpdateUI();

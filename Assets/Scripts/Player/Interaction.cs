@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -63,7 +64,7 @@ public class Interaction : MonoBehaviour
             curInteractable = null;
             curInteractGameObject = null;
             itemInfoUIPanel.SetActive(false);
-            promptText.gameObject.SetActive(false);
+            promptText.text=String.Empty;
         }
     }
 }

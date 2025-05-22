@@ -35,7 +35,7 @@ public class ItemSlot : MonoBehaviour
         
         icon.gameObject.SetActive(true);
         icon.sprite = item.icon;
-        quantityText.text = quantity >= 1 ? quantity.ToString() : String.Empty;
+        quantityText.text = quantity >= 0 ? quantity.ToString() : String.Empty;
 
         if (outline != null)
         {
@@ -48,7 +48,7 @@ public class ItemSlot : MonoBehaviour
         item = null;
         quantity = 0;
         icon.sprite = null;
-        quantityText.text = String.Empty;
+        quantityText.text = quantity.ToString();
         if(outline != null)
             outline.enabled = false;
     }
