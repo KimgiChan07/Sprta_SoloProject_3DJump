@@ -1,6 +1,12 @@
 이 프로젝트는 Unity 기반의 3D 플랫폼 게임에서 자주 사용되는 플레이어 상호작용 시스템을 구현합니다.
 점프 충전, 낙하 대미지, 점프 패드, 움직이는 플랫폼, 체력/스태미나 관리 등 다양한 물리 기능이 포함되어 있습니다.
 
+<details>
+<summary>빌드 파일</summary>
+
+https://drive.google.com/file/d/1U1oYDnDB1678hsj4sJ_ssl_oXuQrRVcj/view?usp=sharing
+  
+</details>
 
 📂 프로젝트 구성
 - Assets/
