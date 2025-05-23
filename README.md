@@ -11,7 +11,7 @@ https://drive.google.com/file/d/1U1oYDnDB1678hsj4sJ_ssl_oXuQrRVcj/view?usp=shari
 </details>
 
 ##
-📂 프로젝트 구성
+## 📂 프로젝트 구성
 - Assets/
 - Scripts/
 
