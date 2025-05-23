@@ -37,7 +37,7 @@ IDamageIbe 인터페이스를 통해 상태 시스템과 느슨하게 연결됨
 <details>
 <summary>코드</summary>
 
-```
+```cs
 private void Update()
 {
     bool isGrounded = IsGrounded();
@@ -68,7 +68,7 @@ UI 게이지도 실시간 연동됨
 <details>
 <summary>코드</summary>
   
-```
+```cs
 public bool IsJumpCharge()
 {
     isCharging = true;
@@ -106,7 +106,7 @@ private void Update()
 <details>
 <summary>코드</summary>
 
-```
+```cs
 private void OnTriggerEnter(Collider other)
 {
     if (other.CompareTag("Player"))
@@ -128,7 +128,7 @@ Ray로 발 밑을 감지한 경우에만 SetParent() 처리 → 옆면 접촉 �
 <details>
 <summary>코드</summary>
 
-```
+```cs
 private void Update()
 {
     float offset = Mathf.PingPong(Time.time * speed, moveDistance);
@@ -163,7 +163,7 @@ Image.fillAmount로 UI에 자동 반영
 <details>
 <summary>코드</summary>
 
-```
+```cs
 public void Set(float _value)
 {
     curValue = Mathf.Clamp(_value, 0f, maxValue);
@@ -187,7 +187,7 @@ PlayerCondition이 이 인터페이스를 구현
 <details>
 <summary>코드</summary>
 
-```
+```cs
 public interface IDamageIbe
 {
     void TakePhysicalDamage(float damage);
