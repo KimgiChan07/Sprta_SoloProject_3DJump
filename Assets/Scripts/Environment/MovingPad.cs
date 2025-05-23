@@ -5,46 +5,81 @@ using UnityEngine;
 
 public class MovingPad : MonoBehaviour
 {
-    public Transform pointA;
-    public Transform pointB;
+    public enum MoveDirection
+    {
+        Vertical,
+        Horizontal
+    }
+
+    [Header("Movement")] 
+    public MoveDirection moveDirection = MoveDirection.Horizontal;
     public float speed = 2;
+    public float moveDistance;
     public Transform player;
 
-    private Vector3 target;
+    private Vector3 targetPos;
 
     void Start()
     {
-        target = pointB.position;
+        targetPos = transform.position;
     }
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, target) < 0.1f)
-        {
-            target = target == pointA.position ? pointB.position : pointA.position;
-        }
+        Move();
     }
+
+    void Move()
+    {
+        float offset = Mathf.PingPong(Time.time * speed, moveDistance);
+        Vector3 newPos = targetPos;
+
+        switch (moveDirection)
+        {
+            case MoveDirection.Vertical:
+                newPos.y += offset;
+                break;
+            case MoveDirection.Horizontal:
+                newPos.x += offset;
+                break;
+        }
+
+        transform.position = newPos;
+    }
+    
+    //-----------------------------------------------------------------------------------------------------
     
     bool IsGrounded()
     {
-        Ray[] rays = new Ray[4]
+        // Ray[] rays = new Ray[4]
+        // {
+        //     new Ray(player.position + (player.forward * 0.1f) + (player.up * 0.01f), Vector3.down),
+        //     new Ray(player.position + (-player.forward * 0.1f) + (player.up * 0.01f), Vector3.down),
+        //     new Ray(player.position + (player.right * 0.1f) + (player.up * 0.01f), Vector3.down),
+        //     new Ray(player.position + (-player.right * 0.1f) + (player.up * 0.01f), Vector3.down),
+        // };
+        //
+        // for (int i = 0; i < rays.Length; i++)
+        // {
+        //     Debug.DrawRay(rays[i].origin, rays[i].direction * 0.1f, Color.red, 1f);
+        //     if (Physics.Raycast(rays[i],1f))
+        //     {
+        //         return true;
+        //     }
+        // }
+        // return false;
+        
+        Vector3 origin = player.position + Vector3.up * 0.1f; // ¾à°£ À§¿¡¼­
+        Ray ray = new Ray(origin, Vector3.down);
+
+        Debug.DrawRay(origin, Vector3.down * 0.2f, Color.green, 1f);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 1f))
         {
-            new Ray(player.position + (player.forward * 0.2f) + (player.up * 0.01f), Vector3.down),
-            new Ray(player.position + (-player.forward * 0.2f) + (player.up * 0.01f), Vector3.down),
-            new Ray(player.position + (player.right * 0.2f) + (player.up * 0.01f), Vector3.down),
-            new Ray(player.position + (-player.right * 0.2f) + (player.up * 0.01f), Vector3.down),
-        };
-      
-        for (int i = 0; i < rays.Length; i++)
-        {
-            Debug.DrawRay(rays[i].origin, rays[i].direction * 0.1f, Color.red, 1f);
-            if (Physics.Raycast(rays[i],1f))
-            {
-                return true;
-            }
+            // ÇöÀç ÇÃ·§Æû°ú ºÎµúÈù °æ¿ì¿¡¸¸ ÀÎÁ¤
+            return hit.collider.gameObject == this.gameObject;
         }
+
         return false;
     }
 
@@ -56,7 +91,7 @@ public class MovingPad : MonoBehaviour
         {
             player.SetParent(transform);
         }
-
+        
     }
 
     private void OnCollisionExit(Collision other)
