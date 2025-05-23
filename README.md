@@ -154,6 +154,8 @@ private void OnCollisionStay(Collision other)
     }
 }
 ```
+</details>
+
 ## 체력 / 스태미나 시스템 (Condition.cs + UiCondition.cs)
 수치 기반으로 curValue, maxValue 관리
 
