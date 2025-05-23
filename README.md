@@ -37,6 +37,7 @@ IDamageIbe 인터페이스를 통해 상태 시스템과 느슨하게 연결됨
 <details>
 <summary>코드</summary>
 
+```
 private void Update()
 {
     bool isGrounded = IsGrounded();
@@ -54,7 +55,7 @@ private void Update()
 
     wasGroundedLastFrame = isGrounded;
 }
-
+```
 </details>
 
 ## 점프 충전 시스템 (PlayerCondition.cs + PlayerJumpUiCondition.cs)
@@ -67,6 +68,7 @@ UI 게이지도 실시간 연동됨
 <details>
 <summary>코드</summary>
   
+```
 public bool IsJumpCharge()
 {
     isCharging = true;
@@ -93,7 +95,9 @@ private void Update()
             ui.SetRatio(jumpCharge / maxChargeTime);
     }
 }
-  
+
+```
+
 </details>
 
 ## 점프 패드 (JumpPad.cs)
@@ -102,6 +106,7 @@ private void Update()
 <details>
 <summary>코드</summary>
 
+```
 private void OnTriggerEnter(Collider other)
 {
     if (other.CompareTag("Player"))
@@ -110,7 +115,7 @@ private void OnTriggerEnter(Collider other)
         rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
     }
 }
-  
+```
 </details>
 
 ## 움직이는 플랫폼 (MovingPad.cs)
@@ -123,6 +128,7 @@ Ray로 발 밑을 감지한 경우에만 SetParent() 처리 → 옆면 접촉 �
 <details>
 <summary>코드</summary>
 
+```
 private void Update()
 {
     float offset = Mathf.PingPong(Time.time * speed, moveDistance);
@@ -147,7 +153,7 @@ private void OnCollisionStay(Collision other)
         other.transform.SetParent(transform);
     }
 }
-
+```
 ## 체력 / 스태미나 시스템 (Condition.cs + UiCondition.cs)
 수치 기반으로 curValue, maxValue 관리
 
@@ -157,6 +163,7 @@ Image.fillAmount로 UI에 자동 반영
 <details>
 <summary>코드</summary>
 
+```
 public void Set(float _value)
 {
     curValue = Mathf.Clamp(_value, 0f, maxValue);
@@ -168,7 +175,8 @@ void UpdateUI()
     if (uiBar != null)
         uiBar.fillAmount = curValue / maxValue;
 }
-  
+
+```
 </details>
 
 ## 인터페이스 기반 데미지 처리 (IDamageIbe.cs)
@@ -179,6 +187,7 @@ PlayerCondition이 이 인터페이스를 구현
 <details>
 <summary>코드</summary>
 
+```
 public interface IDamageIbe
 {
     void TakePhysicalDamage(float damage);
@@ -192,5 +201,5 @@ public class PlayerCondition : MonoBehaviour, IDamageIbe
         onTakeDamage?.Invoke();
     }
 }
-  
+```
 </details>
